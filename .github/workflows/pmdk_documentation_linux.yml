@@ -1,11 +1,11 @@
-name: PMDK_runners
+name: PMDK_documentation_linux
 
-on: [push, pull_request]
+on: [ workflow_dispatch ]
 
 jobs:
   linux:
-    name: PMDK_runners
-    if: github.repository == 'pmem/pmdk'
+    name: PMDK_documentation_linux
+    if: github.repository == 'skotlowskii/pmdk'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -13,10 +13,10 @@ jobs:
         os: [[self-hosted, rhel],[self-hosted, opensuse]]
     env:
       WORKDIR: utils/gha-runners
+      SCRIPT: src/scripts/split_manpage/split_manpage_tests.py
 
     steps:
-
-        - name: Clone the git repo
+        - name: clone PMDK repository
           uses: actions/checkout@v2
 
         - name: Get system information
@@ -25,12 +25,7 @@ jobs:
 
         - name: Build
           run: |
-            . $WORKDIR/build-pmdk.sh; build_pmdk
-
-        - name: Create testconfig files
-          run: |
-            ./$WORKDIR/create-testconfig.sh
+            . $WORKDIR/build-pmdk.sh; build_pmdk_documentation
 
         - name: Run tests
-          run: |
-            make check
+          run: python3 ${SCRIPT} --with-pmem2 -r $(pwd) -i $(pwd)/../install
