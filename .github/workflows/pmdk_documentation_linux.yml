@@ -5,7 +5,7 @@ on: [workflow_dispatch]
 jobs:
   linux:
     name: PMDK_documentation_linux
-    if: github.repository == 'pmem/pmdk'
+    if: github.repository == 'skotlowskii/pmdk'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
