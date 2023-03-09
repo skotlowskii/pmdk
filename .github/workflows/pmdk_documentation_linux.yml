@@ -1,9 +1,6 @@
 name: PMDK_documentation_linux
 
-on:
-  schedule:
-    # run this job at 00:00 UTC every Saturday
-    - cron: '0 0 * * 6'
+on: [workflow_dispatch]
 
 jobs:
   linux:
