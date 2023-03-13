@@ -1,11 +1,16 @@
 name: documentation
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  pull_request:
+  schedule:
+    # run this job at 00:00 UTC every Saturday
+    - cron: '0 0 * * 6'
 
 jobs:
   linux:
     name: documentation
-    if: github.repository == 'pmem/pmdk'
+    if: github.repository == 'skotlowskii/pmdk'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
