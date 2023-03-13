@@ -20,6 +20,9 @@ jobs:
         - name: clone PMDK repository
           uses: actions/checkout@v2
 
+        - name: Install necessary packages
+          run: apt-get update && apt-get install -y libndctl-dev
+
         - name: Build
           run: |
             ./$WORKDIR/build-pmdk.sh build_documentation
