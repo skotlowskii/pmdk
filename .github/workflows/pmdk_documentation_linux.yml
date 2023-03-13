@@ -25,7 +25,7 @@ jobs:
 
         - name: Build
           run: |
-            ./$WORKDIR/build-pmdk.sh build_documentatio
+            ./$WORKDIR/build-pmdk.sh
 
         - name: Run tests
           run: python3 ${SCRIPT} --with-pmem2 -r $(pwd) -i $(pwd)/../install
