@@ -21,7 +21,7 @@ jobs:
           uses: actions/checkout@v2
 
         - name: Install necessary packages
-          run: apt-get update && apt-get install -y libndctl-dev
+          run: sudo apt-get update && sudo apt-get install -y libndctl-dev
 
         - name: Build
           run: |
