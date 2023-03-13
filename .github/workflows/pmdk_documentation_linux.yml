@@ -11,11 +11,7 @@ jobs:
   linux:
     name: documentation
     if: github.repository == 'skotlowskii/pmdk'
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [[self-hosted, rhel],[self-hosted, opensuse]]
+    runs-on: ubuntu-latest
     env:
       WORKDIR: utils/gha-runners
       SCRIPT: utils/check_docs/split_manpage_tests.py
