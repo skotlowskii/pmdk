@@ -1,13 +1,15 @@
-name: PMDK_documentation_linux
+name: documentation
 
 on:
+  workflow_dispatch:
+  pull_request:
   schedule:
     # run this job at 00:00 UTC every Saturday
     - cron: '0 0 * * 6'
 
 jobs:
   linux:
-    name: PMDK_documentation_linux
+    name: documentation
     if: github.repository == 'pmem/pmdk'
     runs-on: ${{ matrix.os }}
     strategy:
@@ -16,7 +18,7 @@ jobs:
         os: [[self-hosted, rhel],[self-hosted, opensuse]]
     env:
       WORKDIR: utils/gha-runners
-      SCRIPT: src/test/split_manpage/split_manpage_tests.py
+      SCRIPT: utils/check_docs/split_manpage_tests.py
 
     steps:
         - name: clone PMDK repository
@@ -28,7 +30,7 @@ jobs:
 
         - name: Build
           run: |
-            . $WORKDIR/build-pmdk.sh; build_pmdk_documentation
+            ./$WORKDIR/build-pmdk.sh build_documentation
 
         - name: Run tests
           run: python3 ${SCRIPT} --with-pmem2 -r $(pwd) -i $(pwd)/../install
