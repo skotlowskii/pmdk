@@ -1,7 +1,6 @@
 name: documentation
 
 on:
-  workflow_dispatch:
   pull_request:
   schedule:
     # run this job at 00:00 UTC every Saturday
@@ -21,7 +20,8 @@ jobs:
           uses: actions/checkout@v2
 
         - name: Install necessary packages
-          run: sudo apt-get update && sudo apt-get install -y libndctl-dev build-essential cmake git pkg-config libdaxctl-dev pandoc
+          run: |
+            sudo apt-get install -y build-essential cmake git libndctl-dev libdaxctl-dev pandoc pkg-config
 
         - name: Build
           run: |
