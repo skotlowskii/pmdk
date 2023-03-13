@@ -34,4 +34,7 @@ function build_documentation {
 if [ "$#" -eq 1 ]; then
   build_method=$1
   ${build_method}
+else
+  echo "Please provide build function name as an argument"
+  exit 1
 fi
