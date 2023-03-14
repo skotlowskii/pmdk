@@ -1,4 +1,4 @@
-name: documentation
+name: Documentation
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   linux:
-    name: documentation
+    name: Documentation
     if: github.repository == 'skotlowskii/pmdk'
     runs-on: ubuntu-latest
     env:
