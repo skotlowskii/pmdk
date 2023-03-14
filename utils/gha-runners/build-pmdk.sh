@@ -8,7 +8,6 @@
 
 FULL_PATH=$(readlink -f $(dirname ${BASH_SOURCE[0]}))
 PMDK_PATH="${FULL_PATH}/../.."
-DOC_ARGUMENTS="PMEM2_INSTALL=y doc install prefix=${PMDK_PATH}/../install -j"
 
 set -eo pipefail
 
@@ -23,18 +22,4 @@ function build_and_test {
 	cd ${PMDK_PATH}/ && make test
 }
 
-#
-# build_documentation -- build documentation from source
-#
-function build_documentation {
-	echo "********** make pmdk_documentation **********"
-	cd ${PMDK_PATH} && make ${DOC_ARGUMENTS}
-}
-
-if [ "$#" -eq 1 ]; then
-  build_method=$1
-  ${build_method}
-else
-  echo "Please provide a function name as an argument"
-  exit 1
-fi
+build_and_test

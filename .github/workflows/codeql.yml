@@ -59,7 +59,7 @@ jobs:
         languages: ${{ matrix.language }}
 
     - name: Run the build
-      run: cd ${WORKDIR} && ./build-pmdk.sh build_and_test
+      run: cd ${WORKDIR} && ./build-pmdk.sh
         
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

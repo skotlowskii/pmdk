@@ -25,7 +25,7 @@ jobs:
 
         - name: Build
           run: |
-            ./$WORKDIR/build-pmdk.sh build_and_test
+            ./$WORKDIR/build-pmdk.sh
 
         - name: Create testconfig files
           run: |
