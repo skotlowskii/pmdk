@@ -1,7 +1,6 @@
-name: documentation
+name: Documentation
 
 on:
-  workflow_dispatch:
   pull_request:
   schedule:
     # run this job at 00:00 UTC every Saturday
@@ -9,13 +8,9 @@ on:
 
 jobs:
   linux:
-    name: documentation
-    if: github.repository == 'pmem/pmdk'
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [[self-hosted, rhel],[self-hosted, opensuse]]
+    name: Documentation
+    if: github.repository == 'skotlowskii/pmdk'
+    runs-on: ubuntu-latest
     env:
       WORKDIR: utils/gha-runners
       SCRIPT: utils/check_docs/split_manpage_tests.py
@@ -24,13 +19,13 @@ jobs:
         - name: clone PMDK repository
           uses: actions/checkout@v2
 
-        - name: Get system information
+        - name: Install necessary packages
           run: |
-            ./$WORKDIR/get-system-info.sh
+            sudo apt-get install -y build-essential cmake libndctl-dev libdaxctl-dev pandoc pkg-config
 
         - name: Build
           run: |
-            ./$WORKDIR/build-pmdk.sh build_documentation
+            ./$WORKDIR/build-pmdk-documentation.sh
 
         - name: Run tests
           run: python3 ${SCRIPT} --with-pmem2 -r $(pwd) -i $(pwd)/../install
