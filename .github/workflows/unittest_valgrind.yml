@@ -4,6 +4,7 @@ on:
   pull_request:
   schedule:
     - cron:  '0 18 * * 5'    # At 18:00 on Friday.
+  workflow_dispatch:
 
 jobs:
   linux:
