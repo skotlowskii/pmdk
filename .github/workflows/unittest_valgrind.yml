@@ -8,7 +8,7 @@ on:
 jobs:
   linux:
     name: valgrind
-    if: github.repository == 'pmem/pmdk'
+    if: github.repository == 'skotlowskii/pmdk'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

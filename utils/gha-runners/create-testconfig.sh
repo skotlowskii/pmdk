@@ -40,7 +40,7 @@ config = {
     'build': 'all',
     'granularity': 'all',
     'fail_on_skip': False,
-    'keep_going': False,
+    'keep_going': True,
     'timeout': '60m',
     'fs_dir_force_pmem': 0,
     'dump_lines': 30,
