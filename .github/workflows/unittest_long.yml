@@ -4,12 +4,14 @@ on:
   pull_request:
   schedule:
     - cron:  '5 0 * * 6'    # At 00:05 on Saturday.
+  timeout-minutes: 960
 
 jobs:
   linux:
     name: long
     if: github.repository == 'pmem/pmdk'
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 960
     strategy:
       fail-fast: false
       matrix:
