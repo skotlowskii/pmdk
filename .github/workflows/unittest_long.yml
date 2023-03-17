@@ -11,7 +11,6 @@ jobs:
     name: long
     if: github.repository == 'pmem/pmdk'
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 960
     strategy:
       fail-fast: false
       matrix:
