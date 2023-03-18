@@ -11,6 +11,7 @@ jobs:
     name: valgrind
     if: github.repository == 'skotlowskii/pmdk'
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 960
     strategy:
       fail-fast: false
       matrix:
