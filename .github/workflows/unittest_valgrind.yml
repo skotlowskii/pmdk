@@ -19,8 +19,7 @@ jobs:
         config: ['-m "force-enable"',
                  '-p "force-enable"',
                  '-d "force-enable"',
-                 '-e "force-enable"'],
-                 ['-t "check" --force-enable memcheck',
+                 '-e "force-enable"'],['-t "check" --force-enable memcheck',
                  '-t "check" --force-enable pmemcheck',
                  '-t "check" --force-enable drd',
                  '-t "check" --force-enable helgrind']
