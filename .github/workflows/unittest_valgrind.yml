@@ -1,6 +1,7 @@
 name: Valgind tests
 
 on:
+  workflow_dispatch:
   pull_request:
   schedule:
     - cron:  '0 18 * * 5'    # At 18:00 on Friday.
@@ -8,7 +9,7 @@ on:
 jobs:
   linux:
     name: valgrind
-    if: github.repository == 'pmem/pmdk'
+    if: github.repository == 'skotlowskii/pmdk'
     runs-on: ${{ matrix.os }}
     timeout-minutes: 960
     strategy:
