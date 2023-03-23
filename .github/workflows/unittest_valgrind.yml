@@ -46,8 +46,8 @@ jobs:
 
         - name: Run tests - Bash framework
           run: |
-            cd src/test/ && ./RUNTESTS ${{ matrix.config[0] }}
+            cd src/test/ && ./RUNTESTS ${{ matrix.config }}
 
         - name: Run tests - Python framework
           run: |
-            cd src/test/ && ./RUNTESTS.py ${{ matrix.config[1] }}
+            cd src/test/ && ./RUNTESTS.py ${{ matrix.config }}
