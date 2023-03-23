@@ -15,6 +15,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [[self-hosted, rhel],[self-hosted, opensuse]]
+        CONFIG: ["BASH_MEMCHECK=-m FORCE=force-enable",
+                 "BASH_PMEMCHECK=-p FORCE=force-enable",
+                 "BASH_DRD=-d FORCE=force-enable",
+                 "BASH_HELGRIND=-e FORCE=force-enable",
+                 "PYTHON_MEMCHECK=-t CHECK=check FORCE=--force-enable MEMCHECK=memcheck",
+                 "PYTHON_PEMCHECK=-t CHECK=check FORCE=--force-enable PMEMCHECK=pmemcheck",
+                 "PYTHON_PEMCHECK=-t CHECK=check FORCE=--force-enable PMEMCHECK=drd",
+                 "PYTHON_PEMCHECK=-t CHECK=check FORCE=--force-enable PMEMCHECK=helgrind"]
     env:
       WORKDIR: utils/gha-runners
 
@@ -35,34 +43,6 @@ jobs:
           run: |
             ./$WORKDIR/create-testconfig.sh
 
-        - name: Run tests - Bash framework - Memcheck
+        - name: Run tests
           run: |
-            cd src/test/ && ./RUNTESTS -m "force-enable"
-
-        - name: Run tests - Bash framework - Pmemcheck
-          run: |
-            cd src/test/ && ./RUNTESTS -p "force-enable"
-
-        - name: Run tests - Bash framework - DRD
-          run: |
-            cd src/test/ && ./RUNTESTS -d "force-enable"
-
-        - name: Run tests - Bash framework - Helgrind
-          run: |
-            cd src/test/ && ./RUNTESTS -e "force-enable"
-
-        - name: Run tests - Python framework - Memcheck
-          run: |
-            cd src/test/ && ./RUNTESTS.py -t "check" --force-enable "memcheck"
-        
-        - name: Run tests - Python framework - Pmemcheck
-          run: |
-            cd src/test/ && ./RUNTESTS.py -t "check" --force-enable "pmemcheck"
-
-        - name: Run tests - Python framework - DRD
-          run: |
-            cd src/test/ && ./RUNTESTS.py -t "check" --force-enable "drd"
-
-        - name: Run tests - Python framework - Helgrind
-          run: |
-            cd src/test/ && ./RUNTESTS.py -t "check" --force-enable "helgrind"
+            cd src/test/ && ./RUNTESTS ${{ matrix.CONFIG }}
