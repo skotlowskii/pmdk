@@ -16,14 +16,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [[self-hosted, rhel],[self-hosted, opensuse]]
-        CONFIG: ["BASH_MEMCHECK=-m FORCE=force-enable",
-                 "BASH_PMEMCHECK=-p FORCE=force-enable",
-                 "BASH_DRD=-d FORCE=force-enable",
-                 "BASH_HELGRIND=-e FORCE=force-enable",
-                 "PYTHON_MEMCHECK=-t CHECK=check FORCE=--force-enable MEMCHECK=memcheck",
-                 "PYTHON_PEMCHECK=-t CHECK=check FORCE=--force-enable PMEMCHECK=pmemcheck",
-                 "PYTHON_PEMCHECK=-t CHECK=check FORCE=--force-enable PMEMCHECK=drd",
-                 "PYTHON_PEMCHECK=-t CHECK=check FORCE=--force-enable PMEMCHECK=helgrind"]
+        config_bash: ['-m "force-enable"',
+                 '-p "force-enable"',
+                 '-d "force-enable"',
+                 '-e "force-enable"']
+        config_py: ['-t "check" --force-enable memcheck',
+                 '-t "check" --force-enable pmemcheck',
+                 '-t "check" --force-enable drd',
+                 '-t "check" --force-enable helgrind']
     env:
       WORKDIR: utils/gha-runners
 
@@ -44,6 +44,10 @@ jobs:
           run: |
             ./$WORKDIR/create-testconfig.sh
 
-        - name: Run tests
+        - name: Run tests - Bash framework
           run: |
-            cd src/test/ && ./RUNTESTS ${{ matrix.CONFIG }}
+            cd src/test/ && ./RUNTESTS ${{ matrix.config_bash }}
+
+        - name: Run tests - Python framework
+          run: |
+            cd src/test/ && ./RUNTESTS.py ${{ matrix.config_py }}
