@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   linux:
     name: RAS_Linux
-    if: github.repository == 'pmem/pmdk'
+    if: github.repository == 'skotlowx/pmdk'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
