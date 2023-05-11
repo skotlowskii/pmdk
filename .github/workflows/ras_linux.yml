@@ -1,11 +1,13 @@
 name: RAS_Linux
 
-on: [push, pull_request]
+on:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   linux:
     name: RAS_Linux
-    if: github.repository == 'skotlowx/pmdk'
+    if: github.repository == 'skotlowskii/pmdk'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
