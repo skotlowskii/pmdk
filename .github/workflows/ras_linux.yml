@@ -24,12 +24,14 @@
 # utils/gha-runners/run-ras-linux.yml
 name: RAS_Linux
 
-on: [push, pull_request]
+on:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   linux:
     name: RAS_Linux
-    if: github.repository == 'pmem/pmdk'
+    if: github.repository == 'skotlowskii/pmdk'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
