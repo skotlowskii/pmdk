@@ -100,6 +100,7 @@ OBJ_TESTS = \
 	obj_pool_open_mt\
 	obj_recovery\
 	obj_recreate\
+	obj_reserve_mt\
 	obj_root\
 	obj_reorder_basic\
 	obj_strdup\
@@ -131,8 +132,6 @@ OTHER_TESTS = \
 	ctl_prefault\
 	ctl_cow\
 	magic\
-	mmap\
-	mmap_fixed\
 	out_err\
 	out_err_mt\
 	pmemobjcli\
@@ -174,7 +173,6 @@ PMEM_TESTS = \
 	pmem_is_pmem\
 	pmem_is_pmem_posix\
 	pmem_map_file\
-	pmem_map_file_trunc\
 	pmem_has_auto_flush\
 	pmem_deep_persist\
 	pmem_memcpy\
@@ -221,14 +219,6 @@ PMEM2_TESTS += \
 else
 $(info NOTE: Skipping tests because libndctl is disabled (see NDCTL_ENABLE)\
 		Skipped tests: pmem2_badblock_mocks pmem2_source_numa)
-endif
-
-ifeq ($(OS_KERNEL_NAME),Linux)
-PMEM2_TESTS += pmem2_mover
-PMEM2_TESTS += pmem2_future
-else
-$(info NOTE: Skipping tests because miniasync is not supported on this os.\
-		Skipped tests: pmem2_mover, pmem2_future)
 endif
 
 PMEMPOOL_TESTS = \

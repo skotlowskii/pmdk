@@ -179,7 +179,8 @@ class BaseTest(metaclass=_TestCase):
             self.check(c)
 
         except futils.Fail:
-            self.elapsed = (datetime.now() - start_time).total_seconds()
+            if start_time is not None:
+                self.elapsed = (datetime.now() - start_time).total_seconds()
             self._on_fail()
             raise
 
@@ -192,7 +193,8 @@ class BaseTest(metaclass=_TestCase):
             msg = '{}: {}TIMEOUT{}\t({})'.format(self, futils.Color.RED,
                                                  futils.Color.END,
                                                  self.ctx)
-            self.elapsed = (datetime.now() - start_time).total_seconds()
+            if start_time is not None:
+                self.elapsed = (datetime.now() - start_time).total_seconds()
             raise futils.Fail(msg)
 
         else:
@@ -358,8 +360,7 @@ class Test(BaseTest):
                 not f[before_suffix].isdigit()
 
         match_files = filter(is_matchfile, cwd_listdir)
-        prefix = 'perl ' if sys.platform == 'win32' else ''
-        match_cmd = prefix + path.join(ROOTDIR, 'match')
+        match_cmd = path.join(ROOTDIR, 'match')
 
         for mf in match_files:
             cmd = '{} {}'.format(match_cmd, mf)

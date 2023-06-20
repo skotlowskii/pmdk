@@ -9,7 +9,7 @@ header: "pmem2 API version 1.0"
 ---
 
 [comment]: <> (SPDX-License-Identifier: BSD-3-Clause)
-[comment]: <> (Copyright 2019-2020, Intel Corporation)
+[comment]: <> (Copyright 2019-2023, Intel Corporation)
 
 [comment]: <> (pmem2_source_alignment.3 -- man page for pmem2_source_alignment)
 
@@ -48,12 +48,8 @@ If the function fails, the *\*alignment* variable is left unmodified and a negat
 
 The **pmem2_source_alignment**() can fail with the following errors:
 
-On all systems:
-
 * **PMEM2_E_INVALID_ALIGNMENT_VALUE** - operating system returned unexpected
 alignment value (eg. it is not a power of two).
-
-on Linux:
 
 * **PMEM2_E_INVALID_FILE_TYPE** - file descriptor points to a character
 device other than Device DAX.
@@ -73,16 +69,8 @@ alignment.
 * -**errno** set by failing **strtoull**(3), while trying to determine
 Device DAX's alignment.
 
-On FreeBSD:
-
-* **PMEM2_E_INVALID_FILE_TYPE** - file descriptor points to a directory,
-block device, pipe, socket, or character device.
-
-* -**errno** set by failing **fstat**(2), while trying to validate the file
-descriptor.
-
 # SEE ALSO #
 
 **errno**(3),  **fstat**(2), **realpath**(3), **read**(2), **strtoull**(3),
-**pmem2_config_new**(3), **pmem2_source_from_handle**(3),
-**pmem2_source_from_fd**(3), **libpmem2**(7) and **<https://pmem.io>**
+**pmem2_config_new**(3), **pmem2_source_from_fd**(3),
+**libpmem2**(7) and **<https://pmem.io>**

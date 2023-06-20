@@ -1,8 +1,6 @@
 # **PMDK: Persistent Memory Development Kit**
 
-[![Travis build status](https://travis-ci.org/pmem/pmdk.svg?branch=master)](https://travis-ci.org/pmem/pmdk)
 [![GHA build status](https://github.com/pmem/pmdk/workflows/PMDK/badge.svg?branch=master)](https://github.com/pmem/pmdk/actions)
-[![Cirrus build status](https://api.cirrus-ci.com/github/pmem/pmdk.svg)](https://cirrus-ci.com/github/pmem/pmdk/master)
 [![Coverity Scan Build Status](https://img.shields.io/coverity/scan/3015.svg)](https://scan.coverity.com/projects/pmem-pmdk)
 [![Coverage Status](https://codecov.io/github/pmem/pmdk/coverage.svg?branch=master)](https://codecov.io/gh/pmem/pmdk/branch/master)
 [![PMDK release version](https://img.shields.io/github/release/pmem/pmdk.svg?sort=semver)](https://github.com/pmem/pmdk/releases/latest)
@@ -21,15 +19,14 @@ Bugs and feature requests for this repo are tracked in our [GitHub Issues Databa
 2. [Getting Started](#getting-started)
 3. [Version Conventions](#version-conventions)
 4. [Dependencies](#dependencies)
-	* [Linux](#linux)
-	* [FreeBSD](#freebsd)
-5. [Building PMDK on Linux or FreeBSD](#building-pmdk-on-linux-or-freebsd)
+5. [Building PMDK](#building-pmdk)
 	* [Make Options](#make-options)
-	* [Testing Libraries](#testing-libraries-on-linux-and-freebsd)
+	* [Testing the Libraries](#testing-the-libraries)
 	* [Memory Management Tools](#memory-management-tools)
 6. [Debugging](#debugging)
 7. [Experimental Packages](#experimental-packages)
-	* [Experimental support for 64-bit ARM](#experimental-support-for-64-bit-arm)
+	* [Experimental Support for 64-bit ARM](#experimental-support-for-64-bit-arm-and-risc-v)
+	* [Experimental Support for PowerPC](#experimental-support-for-powerpc)
 8. [Contact Us](#contact-us)
 
 ## Libraries and Utilities
@@ -40,10 +37,6 @@ Libraries available in this repository:
 - [libpmem](https://pmem.io/pmdk/libpmem/):  provides low level persistent memory support.
 
 - [libpmem2](https://pmem.io/pmdk/libpmem2/):  provides low level persistent memory support, is a new version of libpmem.
-
-> NOTICE:
-Support for async functions is deprecated since PMDK 1.13.0 release
-and will be removed in the PMDK 1.14.0 release along with the miniasync dependency.
 
 - [libpmemobj](https://pmem.io/pmdk/libpmemobj/):  provides a transactional object store, providing memory allocation, transactions, and general facilities for persistent memory programming.
 
@@ -75,14 +68,8 @@ Available Utilities:
 
 - [pmemcheck](https://pmem.io/2015/07/17/pmemcheck-basic.html): Use dynamic runtime analysis with an enhanced version of Valgrind for use with persistent memory.
 
-Currently these libraries only work on 64-bit Linux and 64-bit FreeBSD 11+<sup>*</sup>.
+Currently these libraries only work on 64-bit Linux.
 For information on how these libraries are licensed, see our [LICENSE](LICENSE) file.
-
-> NOTICE:
-Support for Windows and FreeBSD are deprecated since PMDK 1.13.0 release
-and will be removed in the PMDK 1.14.0 release.
-
-><sup>*</sup> DAX is not yet supported in FreeBSD, so at this time PMDK is available as a technical preview release for development purposes.
 
 ## Getting Started
 
@@ -110,8 +97,6 @@ See our **[Dockerfiles](utils/docker/images)** (used e.g. on our CI
 systems) to get an idea what packages are required to build
 the entire PMDK, with all the tests and examples.
 
-### Linux
-
 You will need to install the following required packages on the build system:
 
 * **autoconf**
@@ -130,29 +115,7 @@ detect hardware failures, which may lead to silent data corruption.
 For information how to disable RAS at runtime for kernels prior to 5.0.4 please
 see https://github.com/pmem/pmdk/issues/4207.
 
-### FreeBSD
-
-> NOTICE:
-Support for FreeBSD is deprecated since PMDK 1.13.0 release
-and will be removed in the PMDK 1.14.0 release.
-
-* **autoconf**
-* **bash**
-* **binutils**
-* **coreutils**
-* **e2fsprogs-libuuid**
-* **gmake**
-* **libunwind**
-* **ncurses**<sup>*</sup>
-* **pkgconf**
-
-><sup>*</sup> The pkg version of ncurses is required for proper operation; the base version included in FreeBSD is not sufficient.
-
-## Building PMDK on Linux or FreeBSD
-
-> NOTICE:
-Support for FreeBSD is deprecated since PMDK 1.13.0 release
-and will be removed in the PMDK 1.14.0 release.
+## Building PMDK
 
 To build from source, clone this tree:
 ```
@@ -169,7 +132,6 @@ Once the build system is setup, the Persistent Memory Development Kit is built u
 ```
 	$ make
 ```
-For FreeBSD, use `gmake` rather than `make`.
 
 By default, all code is built with the `-Werror` flag, which fails
 the whole build when the compiler emits any warning. This is very useful during
@@ -223,7 +185,7 @@ This will install files to /tmp/usr/lib, /tmp/usr/include /tmp/usr/share/man.
 ```
 	$ make doc
 ```
-This call requires the following dependencies: **pandoc**. Pandoc is provided by the hs-pandoc package on FreeBSD.
+This call requires the following dependencies: **pandoc**.
 
 **Install copy of source tree** can be done by specifying the path where you want it installed.
 ```
@@ -253,11 +215,7 @@ To build dpkg packages without running tests:
 ```
 This requires **devscripts** to be installed.
 
-### Testing Libraries on Linux and FreeBSD
-
-> NOTICE:
-Support for FreeBSD is deprecated since PMDK 1.13.0 release
-and will be removed in the PMDK 1.14.0 release.
+### Testing the Libraries
 
 You will need to install the following package to run unit tests:
 * **ndctl**
@@ -285,7 +243,8 @@ run different types of tests.
 
 ### Memory Management Tools
 
-The PMDK libraries support standard Valgrind DRD, Helgrind and Memcheck, as well as a PM-aware version of [Valgrind](https://github.com/pmem/valgrind) (not yet available for FreeBSD). By default, support for all tools is enabled. If you wish to disable it, supply the compiler with **VG_\<TOOL\>_ENABLED** flag set to 0, for example:
+The PMDK libraries support standard Valgrind DRD, Helgrind and Memcheck, as well as a PM-aware version of [Valgrind](https://github.com/pmem/valgrind).
+By default, support for all tools is enabled. If you wish to disable it, supply the compiler with **VG_\<TOOL\>_ENABLED** flag set to 0, for example:
 ```
 	$ make EXTRA_CFLAGS=-DVG_MEMCHECK_ENABLED=0
 ```
@@ -321,18 +280,15 @@ If you want to build/install experimental packages run:
 
 ### Experimental Support for 64-bit ARM and RISC-V
 
-There is an initial support for 64-bit ARM and RISC-V processors provided.
-While PMDK's internal testsuite passes on DRAM-only systems, support for
-neither of these architectures has been validated on any persistent memory
-hardware, nor has the code received review from any person with professional
-knowledge of either of these platforms.
-
+There is initial support for 64-bit ARM and RISC-V processors provided.
+It is currently not validated nor maintained.
 Thus, these architectures should not be used in a production environment.
 
-### PowerPC support
+### Experimental Support for PowerPC
 
-PowerPC support is ppc64le only and includes all libraries. They should build
-and pass all tests.
+There is initial support for ppc64le processors provided.
+It is currently not validated nor maintained.
+Thus, this architecture should not be used in a production environment.
 
 The on-media pool layout is tightly attached to the page size
 of 64KiB used by default on ppc64le, so it is not interchangeable with
